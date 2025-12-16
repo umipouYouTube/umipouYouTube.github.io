@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>RTM</title>
+
+<style>
+:root {
+    --bg: #f5f7fb;
+    --card: rgba(255,255,255,0.9);
+    --border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    color: #000;
+    background:
+        radial-gradient(circle at top left, #e6efff, transparent 45%),
+        radial-gradient(circle at bottom right, #f3e6ff, transparent 45%),
+        var(--bg);
+}
+
+/* 背景グリッド */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+header {
+    text-align: center;
+    padding: 80px 20px 50px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 56px;
+    font-weight: 700;
+}
+
+header p {
+    margin-top: 12px;
+    opacity: 0.7;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px 80px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    height: 180px;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #4f8cff, #8b7dff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+}
+
+.card h3 {
+    margin: 18px 0 6px;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 14px;
+    opacity: 0.65;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>かんたんオープン</h1>
+    <p>自分用</p>
+</header>
+
+<div class="container">
+    <div class="grid">
+
+        <!-- ツールA -->
+        <div class="card" onclick="openSiteA()">
+            <div class="icon">🚆</div>
+            <h3>RTM</h3>
+            <p>ModとLibとAddon</p>
+        </div>
+
+        <!-- ツールB -->
+        <div class="card" onclick="openSite('http://chanhino.com/minecraft-id-list/')">
+            <div class="icon">🧱</div>
+            <h3>ブロックID一覧</h3>
+            <p>開く</p>
+        </div>
+
+        <!-- ツールC -->
+        <div class="card" onclick="openSite('https://scratch.mit.edu/')">
+            <div class="icon">🟧</div>
+            <h3>Scratch</h3>
+            <p>開く</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function openSite(url){
+    window.open(url, "_blank");
+}
+
+function openSiteA(){
+    window.open("https://www.curseforge.com/minecraft/mc-mods/realtrainmod/files/all", "_blank");
+    window.open("https://www.curseforge.com/minecraft/mc-mods/ngtlib", "_blank");
+    window.open("https://rtmaddon-search.com/", "_blank");
+}
+</script>
+
+</body>
+</html>
