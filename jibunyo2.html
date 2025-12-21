@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>作業タイマー</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+  background: #111;
+  color: #fff;
+}
+
+h1 { margin-top: 20px; }
+
+#mode { font-size: 20px; margin: 10px; }
+#time { font-size: 48px; margin: 10px; }
+
+svg {
+  width: 220px;
+  height: 220px;
+  transform: rotate(-90deg);
+}
+
+circle {
+  fill: none;
+  stroke-width: 15;
+}
+
+.bg { stroke: #333; }
+
+.progress {
+  stroke: #00ff88;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+button {
+  font-size: 20px;
+  padding: 12px 30px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.stop { background: #ff4444; color: #fff; }
+.start { background: #00cc88; color: #000; }
+
+/* 設定画面 */
+#settings {
+  display: none;
+  margin-top: 20px;
+}
+
+input {
+  font-size: 18px;
+  width: 70px;
+}
+
+/* 終了画面 */
+#endScreen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #aa0000;
+  color: #fff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#endText {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+</style>
+</head>
+<body>
+
+<h1>作業タイマー</h1>
+
+<div id="mode"></div>
+
+<svg id="gauge">
+  <circle class="bg" cx="110" cy="110" r="90"></circle>
+  <circle class="progress" cx="110" cy="110" r="90"></circle>
+</svg>
+
+<div id="time"></div>
+
+<button id="stopBtn" class="stop" onclick="stopCycle()">ストップ</button>
+
+<!-- 設定画面 -->
+<div id="settings">
+  <h2>時間設定</h2>
+
+  作業：
+  <input type="number" id="workMin" value="50" min="0"> 分
+  <input type="number" id="workSec" value="0" min="0" max="59"> 秒
+  <br><br>
+
+  休憩：
+  <input type="number" id="breakMin" value="10" min="0"> 分
+  <input type="number" id="breakSec" value="0" min="0" max="59"> 秒
+  <br><br>
+
+  <button class="start" onclick="startFromSettings()">スタート</button>
+</div>
+
+<!-- 終了画面 -->
+<div id="endScreen">
+  <div id="endText"></div>
+  <button class="start" onclick="continueNext()">続ける</button>
+</div>
+
+<script>
+let timer;
+let remaining;
+let total;
+let running = true;
+let mode = "work";
+
+let workSeconds = 50 * 60;
+let breakSeconds = 10 * 60;
+
+const circle = document.querySelector(".progress");
+const radius = 90;
+const circumference = 2 * Math.PI * radius;
+circle.style.strokeDasharray = circumference;
+
+function startTimer(seconds, label) {
+  clearInterval(timer);
+  remaining = seconds;
+  total = seconds;
+
+  document.getElementById("settings").style.display = "none";
+  document.getElementById("endScreen").style.display = "none";
+  document.getElementById("stopBtn").style.display = "inline-block";
+  document.getElementById("gauge").style.display = "block";
+
+  document.getElementById("mode").textContent = label;
+
+  timer = setInterval(() => {
+    remaining--;
+
+    if (remaining <= 0) {
+      clearInterval(timer);
+      showEndScreen();
+      return;
+    }
+
+    update();
+  }, 1000);
+
+  update();
+}
+
+function update() {
+  const min = Math.floor(remaining / 60);
+  const sec = remaining % 60;
+  document.getElementById("time").textContent =
+    String(min).padStart(2,"0")+":"+String(sec).padStart(2,"0");
+
+  const progress = remaining / total;
+  circle.style.strokeDashoffset =
+    circumference * (1 - progress);
+}
+
+function startWork() {
+  mode = "work";
+  startTimer(workSeconds, "作業時間");
+}
+
+function startBreak() {
+  mode = "break";
+  startTimer(breakSeconds, "休憩時間");
+}
+
+function showEndScreen() {
+  document.getElementById("endScreen").style.display = "flex";
+  document.getElementById("endText").textContent =
+    mode === "work" ? "タイマー終了　休憩" : "休憩終了";
+}
+
+function continueNext() {
+  document.getElementById("endScreen").style.display = "none";
+  mode === "work" ? startBreak() : startWork();
+}
+
+function stopCycle() {
+  clearInterval(timer);
+
+  document.getElementById("mode").textContent = "停止中";
+  document.getElementById("time").textContent = "00:00";
+  circle.style.strokeDashoffset = circumference;
+
+  document.getElementById("settings").style.display = "block";
+  document.getElementById("stopBtn").style.display = "none";
+  document.getElementById("gauge").style.display = "none";
+}
+
+function startFromSettings() {
+  const wm = Number(document.getElementById("workMin").value);
+  const ws = Number(document.getElementById("workSec").value);
+  const bm = Number(document.getElementById("breakMin").value);
+  const bs = Number(document.getElementById("breakSec").value);
+
+  workSeconds = wm * 60 + ws;
+  breakSeconds = bm * 60 + bs;
+
+  if (workSeconds <= 0 || breakSeconds <= 0) {
+    alert("時間は1秒以上にしてください");
+    return;
+  }
+
+  startWork();
+}
+
+/* 起動時は即スタート */
+window.addEventListener("load", () => {
+  startWork();
+});
+</script>
+
+</body>
+</html>
