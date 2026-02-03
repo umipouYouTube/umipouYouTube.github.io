@@ -4,14 +4,14 @@
 }
 .hogehogepiaaaa{
     font-size: 30px;
-    color:rgb(0, 255, 123);
+    color:rgb(255, 255, 255);
     font-family: 'keifont';
     text-decoration:none;
 }
 .pogepogepiaaaa{
     display:flex;
     flex-direction: row;
-    background-color: rgba(0, 255, 255, 0.462);
+    background-image: linear-gradient(90deg, rgba(0, 255, 123, 0.31), rgba(150, 170, 240, 0.31));
     border-radius: 20px;
 }
 .kogekogepiaaaa{
@@ -24,14 +24,13 @@
     text-decoration:none;
 }
 .vogevogepiaaaa{
+
     border-radius: 20px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: rgb(0, 191, 92);
     margin: 10px auto 10px auto;
     padding: 10px;
-    width: 50%;
-    background-color: rgba(232, 232, 232, 0.49);
+    width: 100%;
+    background-image: linear-gradient(90deg, rgba(0, 255, 123, 0.31), rgba(150, 170, 240, 0.31));
+    linear-gradient(90deg, rgba(0, 255, 123, 0.31), rgba(150, 170, 240, 0.31));
 
 
 }
@@ -40,17 +39,23 @@
     justify-content: center;
     width: 100%;
     margin: 0%;
+    color: white;
+    font-size: 30px;
 }
 .rogerogepiaaaa{
     text-align: center;
     width: 100%;
     font-size: 30px;
+    font-family: 'keifont';
 }
 .gogegogepiaaaa{
-    color: rgb(27, 139, 143);
+    color:rgb(255, 255, 255);;
     font-family: 'keifont';
     font-size: 40px;
 }
 .gogegogepiaaaa:hover{
-    color: rgba(0, 255, 106, 0.64);
+    
+}
+.dogedogepiaaaa{
+    background-color:linear-gradient(180deg, rgba(200, 200, 200, 1), rgba(90, 90, 90, 1));;
 }
